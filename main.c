@@ -1,53 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #define SZ 80
 
-int receive();
-
-int menu();
+void command();
 
 int main(){
     int OP, ST;
+    char COMMAND[SZ];
     pid_t PID;
     PID = fork();
 
     if(PID == 0){
-        printf("pid do filho %d",getpid());
-        OP = menu();
-        while(OP != 0){     // chama a função para execução do comando
-            if(OP == 1){
-                receive();
-                OP = menu();
-            } else{
-                printf("INVALID OPTION!!!");
-                OP = menu();
-            }
+        printf("PID DO FILHO %d\n",getpid());
+        while(strcmp(COMMAND, "exit\n") != 0){     // chama a função para execução do comando
+            command(&COMMAND);
         }
     } else if(PID < 0){
         printf("ERROR");
         exit(1);
     } else{
-        printf("pid do Pai: %d\n", getpid());
+        printf("PID DO PAI: %d\n", getpid());
         int ST;
         (void)waitpid(PID, &ST, 0);
     }
     return 0;
 }
 
-int receive(){
-    char COMMAND[SZ];
-    printf("\nENTER THE COMMAND:");
+void command(char *COMMAND){
+    printf("\nCOMMAND $: ");
     setbuf(stdin,NULL);
     fgets(COMMAND, SZ, stdin);
     system(COMMAND);
-};
-
-int menu(){
-    int OP = 0;
-    printf("\nWANT TO RUN A COMMAND? (1 - YES | 0 - NO)\n");
-    setbuf(stdin,NULL);
-    scanf("%d",&OP);
-    return OP;
 };
