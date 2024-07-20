@@ -1,4 +1,4 @@
-# WEB SERVER IN C
+# COMMAND INTERPRETER IN C
 
 Este repositorio possui o trabalho prático da disciplina de Sistema Operacional no curso de Ciência da Computação na UFSJ de 2022.
 
